@@ -1,0 +1,56 @@
+# =========================
+# Go (build/test artifacts)
+# =========================
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries / outputs
+*.test
+*.out
+
+# Go coverage / profiling
+*.coverprofile
+coverage.out
+*.cov
+*.pprof
+cpu.prof
+mem.prof
+
+# Delve debugger
+__debug_bin
+
+# Workspace files (Go 1.18+)
+go.work
+go.work.sum
+
+# =========================
+# Project output folders
+# =========================
+/bin/
+/dist/
+/build/
+
+# =========================
+# Logs & temp files
+# =========================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
