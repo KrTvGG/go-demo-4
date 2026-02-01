@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand/v2"
 )
 
 type account struct {
@@ -10,11 +11,10 @@ type account struct {
 	url      string
 }
 
+var letterRunes = []rune("absdefghigklmnopqrstuvwhyzABSCIFGHIGKLMNOPQRSTUVWXYZ1234567890!.~?*")
+
 func main() {
-	str := "Привет!)"
-	for _, ch := range str {
-		fmt.Println(ch, string(ch))
-	}
+	fmt.Println(generatePassword(12))
 
 	login := promptData("Введите логин")
 	password := promptData("Введите пароль")
@@ -38,4 +38,12 @@ func promptData(prompt string) string {
 
 func outputPassword(acc *account) {
 	fmt.Println(acc.login, acc.password, acc.url)
+}
+
+func generatePassword(n int) string {
+	res := make([]rune, n)
+	for i := range res {
+		res[i] = letterRunes[rand.IntN(len(letterRunes))]
+	}
+	return string(res)
 }
