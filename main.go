@@ -26,38 +26,48 @@ func (acc *account) generatePassword(n int) {
 }
 
 func newAccount(login, password, urlString string) (*account, error) {
-	_, err := url.ParseRequestURI(urlString)
-	if err != nil {
+	if login == "" {
+		return nil, errors.New("INVALID_LOGIN")
+	}
+
+	_, urlErr := url.ParseRequestURI(urlString)
+	if urlErr != nil {
 		return nil, errors.New("INVALID_URL")
 	}
-	return &account{
+
+	newAcc := &account{
 		login:    login,
 		url:      urlString,
 		password: password,
-	}, nil
+	}
+
+	if password == "" {
+		newAcc.generatePassword(12)
+	}
+
+	return newAcc, nil
 }
 
 var letterRunes = []rune("absdefghigklmnopqrstuvwhyzABSCIFGHIGKLMNOPQRSTUVWXYZ1234567890!.~?*")
 
 func main() {
 	login := promptData("Введите логин")
-	password := promptData("Введите пароль")
+	password := promptData("Введите пароль (enter для генерации)")
 	url := promptData("Введите URL")
 
 	myAccount, err := newAccount(login, password, url)
 
 	if err != nil {
-		fmt.Println("Неверный формат URL")
+		fmt.Println("Неверный формат URL или Логин")
 		return
 	}
 
-	myAccount.generatePassword(12)
 	myAccount.outputPassword()
 }
 
 func promptData(prompt string) string {
 	fmt.Print(prompt + ": ")
 	var res string
-	fmt.Scan(&res)
+	fmt.Scanln(&res)
 	return res
 }
