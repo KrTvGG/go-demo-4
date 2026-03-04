@@ -11,6 +11,11 @@ type account struct {
 	url      string
 }
 
+func (acc account) outputPassword() {
+	fmt.Println(acc)
+	fmt.Println(acc.login, acc.password, acc.url)
+}
+
 var letterRunes = []rune("absdefghigklmnopqrstuvwhyzABSCIFGHIGKLMNOPQRSTUVWXYZ1234567890!.~?*")
 
 func main() {
@@ -26,7 +31,7 @@ func main() {
 		url:      url,
 	}
 
-	outputPassword(&myAccount)
+	myAccount.outputPassword()
 }
 
 func promptData(prompt string) string {
@@ -34,10 +39,6 @@ func promptData(prompt string) string {
 	var res string
 	fmt.Scan(&res)
 	return res
-}
-
-func outputPassword(acc *account) {
-	fmt.Println(acc.login, acc.password, acc.url)
 }
 
 func generatePassword(n int) string {
