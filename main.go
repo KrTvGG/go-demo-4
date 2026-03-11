@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"demo/password/account"
+	"demo/password/files"
+	"fmt"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 	}
 
 	myAccount.OutputPassword()
+	files.WriteFile()
 }
 
 func promptData(prompt string) string {
