@@ -7,7 +7,33 @@ import (
 )
 
 func main() {
-	createAccount()
+	fmt.Println("__Менеджер паролей__")
+Menu:
+	for {
+		variant := getMenu()
+		switch variant {
+		case 1:
+			createAccount()
+		case 2:
+			findAccount()
+		case 3:
+			destroyAccount()
+		default:
+			break Menu
+		}
+	}
+}
+
+func getMenu() int {
+	var variant int
+	fmt.Println("Выберите вариант:")
+	fmt.Println("1. Создать аккаунт")
+	fmt.Println("2. Найти аккаунт")
+	fmt.Println("3. Удалить аккаунт")
+	fmt.Println("4. Выход")
+	fmt.Print("> ")
+	fmt.Scanln(&variant)
+	return variant
 }
 
 func createAccount() {
@@ -27,6 +53,14 @@ func createAccount() {
 		return
 	}
 	files.WriteFile(file, "data.json")
+}
+
+func findAccount() {
+
+}
+
+func destroyAccount() {
+
 }
 
 func promptData(prompt string) string {
