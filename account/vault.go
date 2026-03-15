@@ -3,7 +3,6 @@ package account
 import (
 	"demo/password/files"
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
