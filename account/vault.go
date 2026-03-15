@@ -52,26 +52,13 @@ func (vault *Vault) AddAccount(acc Account) {
 	files.WriteFile(data, "data.json")
 }
 
-func Find(url string) *Vault {
-	file, err := files.ReadFile("data.json")
-	if err != nil {
-		color.Red("Не удалось найти файл data.json")
-		return nil
-	}
-	var vault Vault
-	err = json.Unmarshal(file, &vault)
-	if err != nil {
-		color.Red("Не удалось разобрать файл data.json")
-		return nil
-	}
-
-	var newVault Vault
-
-	for _, value := range vault.Accounts {
-		if strings.Contains(value.Url, url) {
-			newVault.Accounts = append(newVault.Accounts, value)
+func (vault *Vault) FindAccountsByUrl(url string) []Account {
+	var accounts []Account
+	for _, account := range vault.Accounts {
+		isMatcked := strings.Contains(account.Url, url)
+		if isMatcked {
+			accounts = append(accounts, account)
 		}
 	}
-
-	return &newVault
+	return accounts
 }
