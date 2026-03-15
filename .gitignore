@@ -42,6 +42,7 @@ go.work.sum
 *.tmp
 *.swp
 *.swo
+data.json
 
 # =========================
 # OS
