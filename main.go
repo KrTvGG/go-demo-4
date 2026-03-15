@@ -3,7 +3,6 @@ package main
 import (
 	"demo/password/account"
 	"fmt"
-
 	"github.com/fatih/color"
 )
 
@@ -19,7 +18,7 @@ Menu:
 		case 2:
 			findAccount(vault)
 		case 3:
-			destroyAccount()
+			destroyAccount(vault)
 		default:
 			break Menu
 		}
@@ -64,8 +63,14 @@ func findAccount(vault *account.Vault) {
 	}
 }
 
-func destroyAccount() {
-
+func destroyAccount(vault *account.Vault) {
+	url := promptData("Введите URL для поиска")
+	isDeleted := vault.DestroyAccountByUrl(url)
+	if isDeleted {
+		color.Green("Удалено")
+	} else {
+		color.Red("Не найдено")
+	}
 }
 
 func promptData(prompt string) string {
