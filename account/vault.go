@@ -3,6 +3,7 @@ package account
 import (
 	"demo/password/files"
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -49,4 +50,28 @@ func (vault *Vault) AddAccount(acc Account) {
 		color.Red("Не удалось преобразовать")
 	}
 	files.WriteFile(data, "data.json")
+}
+
+func Find(url string) *Vault {
+	file, err := files.ReadFile("data.json")
+	if err != nil {
+		color.Red("Не удалось найти файл data.json")
+		return nil
+	}
+	var vault Vault
+	err = json.Unmarshal(file, &vault)
+	if err != nil {
+		color.Red("Не удалось разобрать файл data.json")
+		return nil
+	}
+
+	var newVault Vault
+
+	for _, value := range vault.Accounts {
+		if strings.Contains(value.Url, url) {
+			newVault.Accounts = append(newVault.Accounts, value)
+		}
+	}
+
+	return &newVault
 }

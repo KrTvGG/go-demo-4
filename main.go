@@ -52,7 +52,9 @@ func createAccount() {
 }
 
 func findAccount() {
-
+	url := promptData("Введите URL для поиска")
+	accounts := account.Find(url)
+	fmt.Println(accounts.Accounts)
 }
 
 func destroyAccount() {
