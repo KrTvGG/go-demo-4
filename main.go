@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	output.PrintError(1)
 	fmt.Println("__Менеджер паролей__")
 	vault := account.NewVault(files.NewJsonDB("data.json"))
 	// vault := account.NewVault(cloud.NewCloudDb("https://a.ru"))
@@ -50,7 +49,7 @@ func createAccount(vault *account.VaultWithDb) {
 	myAccount, err := account.NewAccount(login, password, url)
 
 	if err != nil {
-		fmt.Println("Неверный формат URL или Логин")
+		output.PrintError("Неверный формат URL или Логин")
 		return
 	}
 
@@ -74,7 +73,7 @@ func destroyAccount(vault *account.VaultWithDb) {
 	if isDeleted {
 		color.Green("Удалено")
 	} else {
-		color.Red("Не найдено")
+		output.PrintError("Не найдено")
 	}
 }
 
