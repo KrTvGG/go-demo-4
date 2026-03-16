@@ -37,3 +37,11 @@ func PrintError(value any) {
 func sum[T int | float32 | float64 | int16 | int32 | string, V int](a, b T) T {
 	return a + b
 }
+
+type List[T any] struct {
+	elements []T
+}
+
+func (l *List[T]) addElement() {
+
+}
