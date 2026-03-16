@@ -1,12 +1,17 @@
 package account
 
 import (
-	"demo/password/files"
 	"encoding/json"
 	"strings"
 	"time"
+
 	"github.com/fatih/color"
 )
+
+type Db interface {
+	Read() ([]byte, error)
+	Write([]byte)
+}
 
 type Vault struct {
 	Accounts  []Account `json:"accounts"`
@@ -15,7 +20,7 @@ type Vault struct {
 
 type VaultWithDb struct {
 	Vault
-	db files.JsonDB
+	db Db
 }
 
 func (vault *Vault) ToBytes() ([]byte, error) {
@@ -26,15 +31,15 @@ func (vault *Vault) ToBytes() ([]byte, error) {
 	return file, nil
 }
 
-func NewVault(db *files.JsonDB) *VaultWithDb {
+func NewVault(db Db) *VaultWithDb {
 	file, err := db.Read()
 	if err != nil {
 		return &VaultWithDb{
 			Vault: Vault{
-				Accounts: []Account{},
+				Accounts:  []Account{},
 				UpdatedAt: time.Now(),
 			},
-			db: *db,
+			db: db,
 		}
 	}
 	var vault Vault
@@ -43,15 +48,15 @@ func NewVault(db *files.JsonDB) *VaultWithDb {
 		color.Red("Не удалось разобрать файл data.json")
 		return &VaultWithDb{
 			Vault: Vault{
-				Accounts: []Account{},
+				Accounts:  []Account{},
 				UpdatedAt: time.Now(),
 			},
-			db: *db,
+			db: db,
 		}
 	}
 	return &VaultWithDb{
 		Vault: vault,
-		db: *db,
+		db:    db,
 	}
 }
 
