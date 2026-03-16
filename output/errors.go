@@ -21,6 +21,7 @@ func PrintError(value any) {
 		return
 	}
 	color.Red("Неизвестный тип ошибки")
+
 	// switch t := value.(type) {
 	// case string:
 	// 	color.Red(t)
@@ -31,4 +32,8 @@ func PrintError(value any) {
 	// default:
 	// 	color.Red("Неизвестный тип ошибки")
 	// }
+}
+
+func sum[T int | float32 | float64 | int16 | int32 | string, V int](a, b T) T {
+	return a + b
 }
