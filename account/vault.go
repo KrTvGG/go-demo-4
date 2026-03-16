@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"strings"
 	"time"
-
 	"github.com/fatih/color"
 )
 
@@ -23,7 +22,8 @@ func (vault *Vault) ToBytes() ([]byte, error) {
 }
 
 func NewVault() (*Vault) {
-	file, err := files.ReadFile("data.json")
+	db := files.NewJsonDB("data.json")
+	file, err := db.Read()
 	if err != nil {
 		return &Vault{
 			Accounts: []Account{},
@@ -75,10 +75,11 @@ func (vault *Vault) DestroyAccountByUrl(url string) bool {
 }
 
 func (vault *Vault) save() {
+	db := files.NewJsonDB("data.json")
 	vault.UpdatedAt = time.Now()
 	data, err := vault.ToBytes()
 	if err != nil {
 		color.Red("Не удалось преобразовать")
 	}
-	files.WriteFile(data, "data.json")
+	db.Write(data)
 }
