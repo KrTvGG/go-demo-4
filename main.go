@@ -9,19 +9,29 @@ import (
 	"github.com/fatih/color"
 )
 
+type data[T any] struct {
+	el []T
+}
+
 func main() {
 	fmt.Println("__Менеджер паролей__")
 	vault := account.NewVault(files.NewJsonDB("data.json"))
 	// vault := account.NewVault(cloud.NewCloudDb("https://a.ru"))
 Menu:
 	for {
-		variant := getMenu()
+		variant := promptData([]string{
+			"1. Создать аккаунт",
+			"2. Найти аккаунт",
+			"3. Удалить аккаунт",
+			"4. Выход",
+			"Выберите вариант",
+		})
 		switch variant {
-		case 1:
+		case "1":
 			createAccount(vault)
-		case 2:
+		case "2":
 			findAccount(vault)
-		case 3:
+		case "3":
 			destroyAccount(vault)
 		default:
 			break Menu
@@ -29,22 +39,10 @@ Menu:
 	}
 }
 
-func getMenu() int {
-	var variant int
-	fmt.Println("Выберите вариант:")
-	fmt.Println("1. Создать аккаунт")
-	fmt.Println("2. Найти аккаунт")
-	fmt.Println("3. Удалить аккаунт")
-	fmt.Println("4. Выход")
-	fmt.Print("> ")
-	fmt.Scanln(&variant)
-	return variant
-}
-
 func createAccount(vault *account.VaultWithDb) {
-	login := promptData("Введите логин")
-	password := promptData("Введите пароль (enter для генерации)")
-	url := promptData("Введите URL")
+	login := promptData([]string{"Введите логин"})
+	password := promptData([]string{"Введите пароль (enter для генерации)"})
+	url := promptData([]string{"Введите URL"})
 
 	myAccount, err := account.NewAccount(login, password, url)
 
@@ -57,7 +55,7 @@ func createAccount(vault *account.VaultWithDb) {
 }
 
 func findAccount(vault *account.VaultWithDb) {
-	url := promptData("Введите URL для поиска")
+	url := promptData([]string{"Введите URL для поиска"})
 	accounts := vault.FindAccountsByUrl(url)
 	if len(accounts) == 0 {
 		color.Red("Аккаунтов не найдено")
@@ -68,7 +66,7 @@ func findAccount(vault *account.VaultWithDb) {
 }
 
 func destroyAccount(vault *account.VaultWithDb) {
-	url := promptData("Введите URL для поиска")
+	url := promptData([]string{"Введите URL для поиска"})
 	isDeleted := vault.DestroyAccountByUrl(url)
 	if isDeleted {
 		color.Green("Удалено")
@@ -77,8 +75,14 @@ func destroyAccount(vault *account.VaultWithDb) {
 	}
 }
 
-func promptData(prompt string) string {
-	fmt.Print(prompt + ": ")
+func promptData[T any](prompts []T) string {
+	for index, line := range prompts {
+		if len(prompts) - 1 == index {
+			fmt.Printf("%v: ", line)
+		} else {
+			fmt.Println(line)
+		}
+	}
 	var res string
 	fmt.Scanln(&res)
 	return res
