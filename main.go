@@ -5,9 +5,11 @@ import (
 	"demo/password/files"
 	"demo/password/output"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
+	"github.com/joho/godotenv"
 )
 
 type data[T any] struct {
@@ -40,6 +42,14 @@ func menuCounter() func() {
 
 func main() {
 	fmt.Println("__Менеджер паролей__")
+
+	err := godotenv.Load()
+	if err != nil {
+		output.PrintError("Не удалось найти .env файл")
+	}
+	res := os.Getenv("KEY")
+	fmt.Println(res)
+
 	vault := account.NewVault(files.NewJsonDB("data.json"))
 	counter := menuCounter()
 	// vault := account.NewVault(cloud.NewCloudDb("https://a.ru"))
