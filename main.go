@@ -68,17 +68,15 @@ func createAccount(vault *account.VaultWithDb) {
 
 func findAccount(vault *account.VaultWithDb) {
 	url := promptData([]string{"Введите URL для поиска"})
-	accounts := vault.FindAccounts(url, ckeckUrl)
+	accounts := vault.FindAccounts(url, func(acc account.Account, str string) bool {
+		return strings.Contains(acc.Url, str)
+	})
 	if len(accounts) == 0 {
 		color.Red("Аккаунтов не найдено")
 	}
 	for _, account := range accounts {
 		account.Output()
 	}
-}
-
-func ckeckUrl(acc account.Account, str string) bool {
-	return strings.Contains(acc.Url, str)
 }
 
 func destroyAccount(vault *account.VaultWithDb) {
