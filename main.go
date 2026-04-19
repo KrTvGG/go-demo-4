@@ -30,12 +30,22 @@ var menuVariants = []string{
 	"Выберите вариант",
 }
 
+func menuCounter() func() {
+	i := 0
+	return func () {
+		i++
+		fmt.Println(i)
+	}
+}
+
 func main() {
 	fmt.Println("__Менеджер паролей__")
 	vault := account.NewVault(files.NewJsonDB("data.json"))
+	counter := menuCounter()
 	// vault := account.NewVault(cloud.NewCloudDb("https://a.ru"))
 Menu:
 	for {
+		counter()
 		variant := promptData(menuVariants...)
 		meneFunc := menu[variant]
 		if meneFunc == nil {
