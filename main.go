@@ -13,6 +13,12 @@ type data[T any] struct {
 	el []T
 }
 
+var menu = map[string]func(*account.VaultWithDb){
+	"1": createAccount,
+	"2": findAccount,
+	"3": destroyAccount,
+}
+
 func main() {
 	fmt.Println("__Менеджер паролей__")
 	vault := account.NewVault(files.NewJsonDB("data.json"))
@@ -26,16 +32,21 @@ Menu:
 			"4. Выход",
 			"Выберите вариант",
 		})
-		switch variant {
-		case "1":
-			createAccount(vault)
-		case "2":
-			findAccount(vault)
-		case "3":
-			destroyAccount(vault)
-		default:
+		meneFunc := menu[variant]
+		if meneFunc == nil {
 			break Menu
 		}
+		meneFunc(vault)
+		// switch variant {
+		// case "1":
+		// 	createAccount(vault)
+		// case "2":
+		// 	findAccount(vault)
+		// case "3":
+		// 	destroyAccount(vault)
+		// default:
+		// 	break Menu
+		// }
 	}
 }
 
