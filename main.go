@@ -48,7 +48,7 @@ func main() {
 		output.PrintError("Не удалось найти .env файл")
 	}
 
-	vault := account.NewVault(files.NewJsonDB("data.json"), *encrypter.NewEncrypter())
+	vault := account.NewVault(files.NewJsonDB("data.vault"), *encrypter.NewEncrypter())
 	counter := menuCounter()
 	// vault := account.NewVault(cloud.NewCloudDb("https://a.ru"))
 Menu:
